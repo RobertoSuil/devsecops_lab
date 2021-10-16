@@ -42,7 +42,7 @@ pipeline {
                     def scannerHome = tool 'SonarQube'
                     
                     withSonarQubeEnv('SonarQube'){
-                        sh "${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=devsecops -Dsonar.sources=. -Dsonar.java.binaries=target/classes -Dsonar.projectBaseDir=${env.WORKSPACE} -Dsonar.exclusions='**/*/test/**/*, **/*/acceptance-test/**/*, **/*.html' -Dsonar.host.url=http://192.168.70.146:9001 -Dsonar.login=4cb8af5218a018b94fb22a8b49889c8464e921a6"
+                        sh "${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=devsecops -Dsonar.sources=. -Dsonar.java.binaries=target/classes -Dsonar.projectBaseDir=${env.WORKSPACE}  -Dsonar.host.url=http://192.168.70.146:9001 -Dsonar.login=4cb8af5218a018b94fb22a8b49889c8464e921a6"
                     }
                 }
             }
