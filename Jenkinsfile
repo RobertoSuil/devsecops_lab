@@ -8,8 +8,9 @@ pipeline {
   
     stages {
         stage('Inicializando...'){
-		figlet 'Initial'
+		
             steps{
+            figlet 'Initial'
              sh '''
               echo "PATH = ${PATH}"
               echo "M2_HOME = ${M2_HOME}"
@@ -18,22 +19,25 @@ pipeline {
         }
         
         stage('Compilación...'){
-		figlet 'Compile'
+		
             steps{
+	    figlet 'Compile'
                 sh 'mvn clean compile -e'
             }
         }
         
         stage('Testing...'){
-		figlet 'Testing'
+		
             steps{
+	    figlet 'Testing'
                 sh 'mvn clean test -e'
             }
         }
         
         stage('Análisis de código estático (SCA)...'){
-		figlet 'SCA'
+		
             steps{
+		figlet 'SCA'
                 sh 'mvn org.owasp:dependency-check-maven:check'
                 
                 archiveArtifacts artifacts: 'target/dependency-check-report.html', followSymlinks: false
@@ -42,8 +46,9 @@ pipeline {
 
         
         stage('Checkeo de seguridad de aplicaciones estáticas (SAST)...'){
-		figlet 'SAST'
+		
             steps{
+		figlet 'SAST'
                 script{
                     def scannerHome = tool 'SonarQube'
                     
