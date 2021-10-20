@@ -35,6 +35,15 @@ pipeline {
                 archiveArtifacts artifacts: 'target/dependency-check-report.html', followSymlinks: false
             }
         }
+        stage('Slack'){
+                      steps{
+                          figlet 'Slack Message'
+                          
+                            slackSend channel: 'devsecops-channel',
+                            color: 'danger',
+                            message: "Se ha terminado una ejecucion del pipeline."
+                      }
+                  }
         
         stage('Checkeo de seguridad de aplicaciones estáticas (SAST)...'){
             steps{
