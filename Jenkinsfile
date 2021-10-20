@@ -40,7 +40,7 @@ pipeline {
                           figlet 'Slack Message'
                           
                             slackSend channel: 'devsecops-channel',
-                            color: 'danger',
+                            color: 'good',
                             message: "Se ha terminado una ejecucion del pipeline."
                       }
                   }
