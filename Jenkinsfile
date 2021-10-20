@@ -7,7 +7,7 @@ pipeline {
     }
   
     stages {
-        stage('Iniciando...'){
+        stage('Inicializando...'){
             steps{
              sh '''
               echo "PATH = ${PATH}"
@@ -16,7 +16,7 @@ pipeline {
             }
         }
         
-        stage('Compilando...'){
+        stage('Compilación...'){
             steps{
                 sh 'mvn clean compile -e'
             }
@@ -48,12 +48,26 @@ pipeline {
                 }
             }
         }
+	
+        stage('Seguridad de contenedores'){
+    		steps{
+    			figlet 'Seguridad de contenedores'
+				script{
+    				env.DOCKER = tool "Docker"
+					env.DOCKER_EXEC = "${DOCKER}/bin/docker"
+					sh '''
+					${DOCKER_EXEC} run --rm -v $(pwd):/root/.cache/ aquasec/trivy python:3.4-alpine
+					'''
+					sh '${DOCKER_EXEC} rmi aquasec/trivy'
+					}
+				}
+            }	    
         
     
 
-        stage('DAST'){
+        stage('Checkeo de seguridad de aplicaciones Dinámicas (Owasp Zap DAST)'){
      		steps{
-			figlet 'Owasp Zap DAST'
+			figlet 'Checkeo de seguridad de aplicaciones Dinámicas (Owasp Zap DAST)'
 			script{
         		    env.DOCKER = tool "Docker"
 			    env.DOCKER_EXEC = "${DOCKER}/bin/docker"
@@ -75,23 +89,10 @@ pipeline {
 						}
 					}
         
-        stage('Scan Docker'){
-    		steps{
-    			figlet 'Scan Docker'
-				script{
-    				env.DOCKER = tool "Docker"
-					env.DOCKER_EXEC = "${DOCKER}/bin/docker"
-					sh '''
-					${DOCKER_EXEC} run --rm -v $(pwd):/root/.cache/ aquasec/trivy python:3.4-alpine
-					'''
-					sh '${DOCKER_EXEC} rmi aquasec/trivy'
-					}
-				}
-            }
             
-		stage('Slack'){
+		stage('Gatillo a Slack'){
     		steps{
-			figlet 'Slack Message'
+			figlet 'Gatillo a Slack'
     			slackSend channel: 'devsecops-channel',
 				color: 'good',
 				message: "Se ha terminado una ejecucion del pipeline."
