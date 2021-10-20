@@ -8,6 +8,7 @@ pipeline {
   
     stages {
         stage('Inicializando...'){
+		figlet 'Initial'
             steps{
              sh '''
               echo "PATH = ${PATH}"
@@ -17,18 +18,21 @@ pipeline {
         }
         
         stage('Compilación...'){
+		figlet 'Compile'
             steps{
                 sh 'mvn clean compile -e'
             }
         }
         
         stage('Testing...'){
+		figlet 'Testing'
             steps{
                 sh 'mvn clean test -e'
             }
         }
         
         stage('Análisis de código estático (SCA)...'){
+		figlet 'SCA'
             steps{
                 sh 'mvn org.owasp:dependency-check-maven:check'
                 
@@ -38,6 +42,7 @@ pipeline {
 
         
         stage('Checkeo de seguridad de aplicaciones estáticas (SAST)...'){
+		figlet 'SAST'
             steps{
                 script{
                     def scannerHome = tool 'SonarQube'
@@ -65,9 +70,9 @@ pipeline {
         
     
 
-        stage('Checkeo de seguridad de aplicaciones Dinámicas (Owasp Zap DAST)'){
+        stage('Owasp Zap DAST'){
      		steps{
-			figlet 'Checkeo de seguridad de aplicaciones Dinámicas (Owasp Zap DAST)'
+			figlet 'Owasp Zap DAST'
 			script{
         		    env.DOCKER = tool "Docker"
 			    env.DOCKER_EXEC = "${DOCKER}/bin/docker"
@@ -90,9 +95,9 @@ pipeline {
 					}
         
             
-		stage('Gatillo a Slack'){
+		stage('Webhook Slack'){
     		steps{
-			figlet 'Gatillo a Slack'
+			figlet 'Webhook Slack'
     			slackSend channel: 'devsecops-channel',
 				color: 'good',
 				message: "Se ha terminado una ejecucion del pipeline."
