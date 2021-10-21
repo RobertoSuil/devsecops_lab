@@ -66,7 +66,7 @@ pipeline {
     				env.DOCKER = tool "Docker"
 					env.DOCKER_EXEC = "${DOCKER}/bin/docker"
 					sh '''
-					${DOCKER_EXEC} run --rm -v $(pwd):/root/.cache/ aquasec/trivy b20fcb3e1549
+					${DOCKER_EXEC} run --rm -v $(pwd):/root/.cache/ aquasec/trivy spring-boot-k8s
 					'''
 					sh '${DOCKER_EXEC} rmi aquasec/trivy'
 					}
