@@ -66,7 +66,7 @@ pipeline {
     				env.DOCKER = tool "Docker"
 					env.DOCKER_EXEC = "${DOCKER}/bin/docker"
 					sh '''
-					${DOCKER_EXEC} run --rm -v $(pwd):/root/.cache/ aquasec/trivy --format template --template "@contrib/html.tpl" -o report.html openjdk:8-jdk-alpine
+					${DOCKER_EXEC} run --rm -v $(pwd):/root/.cache/ aquasec/trivy openjdk:8-jdk-alpine
 					'''
 					sh '${DOCKER_EXEC} rmi aquasec/trivy'
 					}
